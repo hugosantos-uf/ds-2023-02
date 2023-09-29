@@ -71,6 +71,6 @@ Manutenção:
 
 Você tinha conhecimento destas atividades e os entregáveis correspondentes? (sim/não)
 
-Não, tive que pesquisar.
+Não.
 
 
