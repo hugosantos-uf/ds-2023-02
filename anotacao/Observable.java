@@ -22,6 +22,4 @@ public class Observable {
             throw new IllegalArgumentException("A classe do observer não está marcada com a anotação @Observer.");
         }
     }
-
-    // Restante do código do objeto observado...
 }
