@@ -3,23 +3,38 @@ import java.util.List;
 
 public class Observable {
     private String identificador;
-    private List<Object> observers;
+    private List<Observer> observers = new ArrayList<>();
 
     public Observable(String identificador) {
         this.identificador = identificador;
-        this.observers = new ArrayList<>();
     }
 
-    public void addObserver(Object observer) {
-        if (observer.getClass().isAnnotationPresent(Observer.class)) {
-            Observer annotation = observer.getClass().getAnnotation(Observer.class);
-            if (annotation.observado().equals(identificador)) {
-                observers.add(observer);
-            } else {
-                throw new IllegalArgumentException("O identificador do observer não coincide com o identificador do objeto observado.");
+    public void adicionarObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void notificarObservers() {
+        observers.forEach(observer -> {
+            if (isObserverForIdentificador(observer, identificador)) {
+                observer.update();
             }
-        } else {
-            throw new IllegalArgumentException("A classe do observer não está marcada com a anotação @Observer.");
-        }
+        });
+    }
+
+    private boolean isObserverForIdentificador(Observer observer, String identificador) {
+        return observer.getClass().isAnnotationPresent(Observer.class) &&
+               observer.getClass().getAnnotation(Observer.class).observado().equals(identificador);
+    }
+
+    public static void main(String[] args) {
+        Observable carroObservable = new Observable("carro");
+
+        Observer observer1 = () -> System.out.println("Observador 1 notificado");
+        Observer observer2 = () -> System.out.println("Observador 2 notificado");
+
+        carroObservable.adicionarObserver(observer1);
+        carroObservable.adicionarObserver(observer2);
+
+        carroObservable.notificarObservers();
     }
 }
